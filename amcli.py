@@ -3,6 +3,7 @@ import argparse
 import datetime as dt
 from amapi.AmDistributions import AmDistributions
 from amapi.AmAttributions import AmAttributions
+from amapi.AmUninstalls import AmUninstalls
 
 def valid_date(s):
     try:
@@ -17,12 +18,15 @@ def dist(args):
 def attr(args):
     AmAttributions(args).report()
 
+def unin(args):
+    AmUninstalls(args).report()
+
 def build_arg_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "report_mnemonic",
         help="produce the report specified here",
-        choices=["dist","attr"]
+        choices=["dist","attr","unin"]
         )
     parser.add_argument(
         "-u",
