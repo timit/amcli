@@ -13,8 +13,9 @@
 - sample invocations:
     - `docker run --rm -ti -v ~/Desktop:/var/data timit/amcli dist -A='com.gliffy.integration.confluence'`
     - `docker run --rm -ti -v ~/Desktop:/var/data timit/amcli dist -A='com.gliffy.integration.jira'`
-    - `docker run --rm -ti -v ~/Desktop:/var/data timit/amcli attr -V='99'  -d='7' -u 'username' -p 'password'`
-    - `docker run --rm -ti -v ~/Desktop:/var/data timit/amcli attr -V='99'  -e='2019-11-19' -d='7' -u 'username' -p 'password'`
+    - `docker run --rm -ti -v ~/Desktop:/var/data timit/amcli attr -V='99' -d='7' -u 'username' -p 'password'`
+    - `docker run --rm -ti -v ~/Desktop:/var/data timit/amcli attr -V='99' -e='2019-11-19' -d='7' -u 'username' -p 'password'`
+    - `docker run --rm -ti -v ~/Desktop:/var/data timit/amcli unin -V='99' -d='7' -u 'username' -p 'password'`
 
 ## python script usage notes
 the python script uses a couple non-standard packages.  these are pulled into the docker image automatically, but running the script outside of the provided docker image will require installation of these packages locally:
