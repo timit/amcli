@@ -96,6 +96,7 @@ class AmAttributions:
         for license in json_result['licenses']:
             # we only record licenses with attributions liceneses that have been updated within the range specifified
             if (('attribution' in license) and (datetime.strptime(license['lastUpdated'],"%Y-%m-%d").replace(tzinfo=pytz.UTC)<=self.criteria.end_date)):
+                print('match!')
                 data_row = copy.deepcopy(self.template_row)
                 for name, value in license.items():
                     if (name == 'addonLicenseId'):
@@ -259,7 +260,8 @@ class AmAttributions:
         parms = {
             'limit':'50',
             'lastUpdated':self.criteria.beg_date.strftime("%Y-%m-%d"),
-            'licenseType':'evaluation'
+            'licenseType':'evaluation',
+            'withAttribution':'true'
         }
         result = self.client.get('/rest/2/vendors/' + self.criteria.vendor + '/reporting/licenses', parms)
         if result.status_code != 200:
