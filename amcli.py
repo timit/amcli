@@ -13,13 +13,22 @@ def valid_date(s):
         raise argparse.ArgumentTypeError(msg)
 
 def dist(args):
-    AmDistributions(args).report()
+    if args.output == 'txt':
+        AmDistributions(args).reportTXT()
+    else:
+        AmDistributions(args).reportCSV()
 
 def attr(args):
-    AmAttributions(args).report()
+    if args.output == 'txt':
+        AmAttributions(args).reportTXT()
+    else:
+        AmAttributions(args).reportCSV()
 
 def unin(args):
-    AmUninstalls(args).report()
+    if args.output == 'txt':
+        AmUninstalls(args).reportTXT()
+    else:
+        AmUninstalls(args).reportCSV()
 
 def build_arg_parser():
     parser = argparse.ArgumentParser()
@@ -67,6 +76,13 @@ def build_arg_parser():
         help="# of days backward to report",
         default=30,
         type=int
+        )
+    parser.add_argument(
+        "-O",
+        "--output",
+        help="produce the report in specified format",
+        default="csv",
+        choices=["txt","csv"]
         )
     parser.add_argument(
         "-v",

@@ -254,8 +254,7 @@ class AmAttributions:
                         data_row.update(core_extras = core_extras)
                 self.table.append(data_row.values())
 
-    def report(self):
-        FILE_DATE = time.strftime("%Y%m%d")
+    def __generate(self):
         # get vendor licenses
         parms = {
             'limit':'50',
@@ -278,12 +277,18 @@ class AmAttributions:
                 sys.exit()
             json_result = json.loads(result.text)
             self.__append(json_result)
-        # write table for reference
-        #outfile = open('/var/data/' + FILE_DATE + '_vendor' + VENDOR + '_attributions' + '.txt', 'w')
-        #print(tabulate(table, headers=headers, tablefmt='simple', floatfmt='.2f'), file = outfile)
-        #outfile.close()
-        # write table for reference
-        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_attributions' + '.csv', 'w')
+
+    def reportTXT(self):
+        self.__generate()
+        FILE_DATE = time.strftime("%Y%m%d")
+        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_attributions.txt', 'w')
+        print(tabulate(self.table, headers=self.headers, tablefmt='simple', floatfmt='.2f'), file = outfile)
+        outfile.close()
+
+    def reportCSV(self):
+        self.__generate()
+        FILE_DATE = time.strftime("%Y%m%d")
+        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_attributions.csv', 'w')
         writer=csv.writer(outfile)
         writer.writerow(self.headers)
         writer.writerows(self.table)
