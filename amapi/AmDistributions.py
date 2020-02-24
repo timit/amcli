@@ -1,6 +1,7 @@
 import requests
 import json
 import sys
+import csv
 from tabulate import tabulate
 import time
 from amapi.AmClient import AmClient
@@ -47,9 +48,7 @@ class AmDistributions:
                 total_users = 0
             self.table.append((category_name, app_name, bundled, bundled_cloud, downloads, total_installs, total_users))
 
-    def report(self):
-        FILE_DATE = time.strftime("%Y%m%d")
-        outfile = open('/var/data/' + FILE_DATE + '_' + self.criteria.app + '.txt', 'w')
+    def __generate(self):
         # get app listing
         result = self.client.get('/rest/2/addons/' + self.criteria.app)
         if result.status_code != 200:
@@ -79,5 +78,19 @@ class AmDistributions:
                     sys.exit()
                 json_result = json.loads(result.text)
                 self.__append(category['name'], json_result)
+
+    def reportTXT(self):
+        self.__generate()
+        FILE_DATE = time.strftime("%Y%m%d")
+        outfile = open('/var/data/' + FILE_DATE + '_' + self.criteria.app + '_distributions.txt', 'w')
         print(tabulate(self.table, headers=self.headers, tablefmt='simple', floatfmt='.2f'), file = outfile)
+        outfile.close()
+
+    def reportCSV(self):
+        self.__generate()
+        FILE_DATE = time.strftime("%Y%m%d")
+        outfile = open('/var/data/' + FILE_DATE + '_' + self.criteria.app + '_distributions.csv', 'w')
+        writer=csv.writer(outfile)
+        writer.writerow(self.headers)
+        writer.writerows(self.table)
         outfile.close()

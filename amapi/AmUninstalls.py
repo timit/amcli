@@ -199,8 +199,7 @@ class AmUninstalls:
                     self.__map_transactions(result_transactions_json)
             self.table.append(self.row.values())
 
-    def report(self):
-        FILE_DATE = time.strftime("%Y%m%d")
+    def __generate(self):
         # get vendor uninstalls
         parms = {
             'limit':'50',
@@ -223,8 +222,18 @@ class AmUninstalls:
                 sys.exit()
             json_result = json.loads(result.text)
             self.__append(json_result)
-        # write table for reference
-        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_uninstalls' + '.csv', 'w')
+
+    def reportTXT(self):
+        self.__generate()
+        FILE_DATE = time.strftime("%Y%m%d")
+        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_uninstalls.txt', 'w')
+        print(tabulate(self.table, headers=self.headers, tablefmt='simple', floatfmt='.2f'), file = outfile)
+        outfile.close()
+
+    def reportCSV(self):
+        self.__generate()
+        FILE_DATE = time.strftime("%Y%m%d")
+        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_uninstalls.csv', 'w')
         writer=csv.writer(outfile)
         writer.writerow(self.headers)
         writer.writerows(self.table)
