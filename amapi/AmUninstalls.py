@@ -226,14 +226,14 @@ class AmUninstalls:
     def reportTXT(self):
         self.__generate()
         FILE_DATE = time.strftime("%Y%m%d")
-        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_uninstalls.txt', 'w')
+        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_uninstalls_' + self.criteria.beg_date.strftime("%Y%m%d") + "-" + self.criteria.end_date.strftime("%Y%m%d") + '.txt', 'w')
         print(tabulate(self.table, headers=self.headers, tablefmt='simple', floatfmt='.2f'), file = outfile)
         outfile.close()
 
     def reportCSV(self):
         self.__generate()
         FILE_DATE = time.strftime("%Y%m%d")
-        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_uninstalls.csv', 'w')
+        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_uninstalls_' + self.criteria.beg_date.strftime("%Y%m%d") + "-" + self.criteria.end_date.strftime("%Y%m%d") + '.csv', 'w')
         writer=csv.writer(outfile)
         writer.writerow(self.headers)
         writer.writerows(self.table)

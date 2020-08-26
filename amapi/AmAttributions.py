@@ -15,8 +15,8 @@ class AmAttributions:
     def __init__(self, args):
         self.criteria = AmCriteria(
             vendor=args.vendor,
+            beg_date=args.begdate,
             end_date=args.enddate,
-            t_minus_days=args.t_minus_days,
             verbosity=args.verbosity
             )
         self.client = AmClient(
@@ -94,8 +94,7 @@ class AmAttributions:
     def __append (self, json_result):
         print('processing: ' + json_result['_links']['self']['href'])
         for license in json_result['licenses']:
-            # we only record licenses with attributions liceneses that have been updated within the range specifified
-            if (('attribution' in license) and (datetime.strptime(license['lastUpdated'],"%Y-%m-%d").replace(tzinfo=pytz.UTC)<=self.criteria.end_date)):
+            if ('attribution' in license):
                 print('match!')
                 data_row = copy.deepcopy(self.template_row)
                 for name, value in license.items():
@@ -259,7 +258,8 @@ class AmAttributions:
         # get vendor licenses
         parms = {
             'limit':'50',
-            'lastUpdated':self.criteria.beg_date.strftime("%Y-%m-%d"),
+            'startDate':self.criteria.beg_date.strftime("%Y-%m-%d"),
+            'endDate':self.criteria.end_date.strftime("%Y-%m-%d"),
             'licenseType':'evaluation',
             'withAttribution':'true'
         }
@@ -283,14 +283,14 @@ class AmAttributions:
     def reportTXT(self):
         self.__generate()
         FILE_DATE = time.strftime("%Y%m%d")
-        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_attributions.txt', 'w')
+        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_attributions_' + self.criteria.beg_date.strftime("%Y%m%d") + "-" + self.criteria.end_date.strftime("%Y%m%d") + '.txt', 'w')
         print(tabulate(self.table, headers=self.headers, tablefmt='simple', floatfmt='.2f'), file = outfile)
         outfile.close()
 
     def reportCSV(self):
         self.__generate()
         FILE_DATE = time.strftime("%Y%m%d")
-        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_attributions.csv', 'w')
+        outfile = open('/var/data/' + FILE_DATE + '_vendor' + self.criteria.vendor + '_attributions_' + self.criteria.beg_date.strftime("%Y%m%d") + "-" + self.criteria.end_date.strftime("%Y%m%d") + '.csv', 'w')
         writer=csv.writer(outfile)
         writer.writerow(self.headers)
         writer.writerows(self.table)
