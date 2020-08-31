@@ -261,7 +261,7 @@ class AmAttributions:
             'startDate':self.criteria.beg_date.strftime("%Y-%m-%d"),
             'endDate':self.criteria.end_date.strftime("%Y-%m-%d"),
             'licenseType':'evaluation',
-            'withAttribution':'true'
+            'withDataInsights':'true'
         }
         result = self.client.get('/rest/2/vendors/' + self.criteria.vendor + '/reporting/licenses', parms)
         if result.status_code != 200:
