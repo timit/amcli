@@ -45,7 +45,7 @@ def build_arg_parser():
     parser.add_argument(
         "-p",
         "--password",
-        help="password for authentication"
+        help="password for authentication.  as of 2020.10.01, atlassian requires the use of API tokens.  those can be generated here - https://id.atlassian.com/manage-profile/security/api-tokens"
         )
     parser.add_argument(
         "-A",

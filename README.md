@@ -1,4 +1,5 @@
 # README
+this client generates reports using the atlassian marketplace API at https://developer.atlassian.com/platform/marketplace/rest/intro/
 
 ## building docker image
 
@@ -30,7 +31,7 @@ the script accepts command-line arguments.  invoking the script with the `-h` op
         - `attr`: marketing campaign attributions
 - optional parameters
     - username specified using `-u`
-    - password specified using `-p`
+    - password specified using `-p` (as of 2020.10.01, atlassian requires the use of API tokens.  those can be generated here - https://id.atlassian.com/manage-profile/security/api-tokens)
     - specify application key for inclusion `-A`
     - specify vendor key `-V`
     - verbosity level using `-v` or `-vv`, allows viewing of input and processing (mainly for debugging purposes)
